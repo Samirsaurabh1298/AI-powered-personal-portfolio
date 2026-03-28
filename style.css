@@ -248,7 +248,6 @@ html.light .hero-badge::before { background: var(--accent); }
   display: block; color: transparent;
   -webkit-text-stroke: 1px rgba(255,255,255,0.3);
 }
-
 html.light .hero-name .line2 { -webkit-text-stroke: 1px rgba(0,0,0,0.15); }
 .hero-name .accent { color: var(--accent); -webkit-text-stroke: 0; }
 
@@ -552,16 +551,84 @@ footer p { font-size: 12px; color: var(--muted); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  nav { padding: 20px 24px; }
+
+  /* Nav */
+  nav { padding: 16px 20px; }
   .nav-links { display: none; }
-  section { padding: 80px 24px; }
-  .hero { padding: 100px 24px 60px; }
-  .hero-stats { gap: 24px; flex-wrap: wrap; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .ai-container { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-  footer { flex-direction: column; gap: 12px; text-align: center; }
+  .nav-cta { padding: 6px 14px; font-size: 11px; }
+
+  /* Hide cursor on mobile — not needed on touch */
+  .cursor, .cursor-ring { display: none; }
+  body { cursor: auto; }
+  a, button { cursor: pointer; }
+
+  /* Sections */
+  section { padding: 64px 20px; }
+
+  /* Hero */
+  .hero { padding: 100px 20px 60px; min-height: 100svh; }
+  .hero-badge { font-size: 10px; padding: 5px 12px; margin-bottom: 24px; }
+  .hero-name {
+    font-size: clamp(40px, 13vw, 64px);
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+  .hero-role { font-size: 15px; margin-bottom: 28px; }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+    margin-bottom: 36px;
+  }
+  .stat-num { font-size: 28px; }
+  .stat-label { font-size: 10px; }
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .btn-primary, .btn-secondary, .btn-resume {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 11px;
+  }
   .scroll-hint { display: none; }
+
+  /* Skills */
+  .skills-grid { grid-template-columns: 1fr; }
+  .skill-card { padding: 24px; }
+
+  /* Experience */
+  .exp-role { font-size: 18px; }
+  .exp-bullets li { font-size: 12px; }
+
+  /* Projects */
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card { padding: 28px; }
+  .project-num { font-size: 52px; }
+  .project-name { font-size: 18px; }
+
+  /* AI Chat */
+  .ai-container { grid-template-columns: 1fr; gap: 32px; }
+  .chat-box { height: 420px; }
+  .ai-suggestions { gap: 6px; }
+  .ai-suggestion { font-size: 11px; padding: 10px 12px; }
+
+  /* Contact */
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .contact-info h3 { font-size: 28px; }
+
+  /* Section titles */
+  .section-title { margin-bottom: 40px; letter-spacing: -1px; }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 32px 20px;
+  }
 }
 
 /* ── SCROLL ANIMATIONS ── */
