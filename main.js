@@ -99,7 +99,7 @@ document.querySelectorAll('.fade-in, .exp-item, .project-card').forEach((el) =>
 );
 
 /* ── AI CHAT (Gemini API) ── */
-const GEMINI_API_KEY = 'gsk_REPLACE_WITH_YOUR_GROQ_KEY';
+const GEMINI_API_KEY = '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';
 
 const SYSTEM_CONTEXT = `You are an AI assistant for Samir Saurabh's portfolio website. Answer questions about Samir in first person (as if you are him). Be concise, professional, and friendly. Keep answers under 100 words unless asked for details.
 
