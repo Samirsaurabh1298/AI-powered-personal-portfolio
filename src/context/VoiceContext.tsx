@@ -70,13 +70,17 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
     const utterance = new SpeechSynthesisUtterance(cleaned)
     utterance.lang = 'en-US'
     utterance.rate = 0.88
-    utterance.pitch = 1.0
+    utterance.pitch = 0.85
     utterance.volume = 1.0
 
     const voices = window.speechSynthesis.getVoices()
+    const maleKeywords = ['male', 'david', 'mark', 'guy', 'daniel', 'alex', 'fred', 'arthur', 'ryan', 'tom', 'james']
     const voice =
+      voices.find(v => v.name === 'Google UK English Male') ||
+      voices.find(v => v.lang.startsWith('en') && maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
       voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('google')) ||
-      voices.find(v => v.lang.startsWith('en'))
+      voices.find(v => v.lang.startsWith('en')) ||
+      null
     if (voice) utterance.voice = voice
 
     setVoiceState('speaking')
