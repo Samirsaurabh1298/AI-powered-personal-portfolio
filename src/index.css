@@ -52,7 +52,7 @@ html { scroll-behavior: smooth; transition: background-color 0.35s ease; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.7;
   overflow-x: hidden;
@@ -589,7 +589,7 @@ html.light .chat-input { background: var(--bg2); }
   color: var(--text);
   font-size: 12px;
   flex: 1;
-  font-family: var(--font-body, monospace);
+  font-family: 'Inter', sans-serif;
 }
 .mini-chat-input::placeholder { color: var(--muted); }
 .mini-chat-input:disabled { opacity: 0.5; }
@@ -643,7 +643,7 @@ html.light .chat-input { background: var(--bg2); }
   padding: 10px 14px;
   color: var(--text);
   font-size: 13px;
-  font-family: var(--font-body, inherit);
+  font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.2s;
 }

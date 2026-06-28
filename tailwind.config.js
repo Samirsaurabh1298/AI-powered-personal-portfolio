@@ -5,7 +5,8 @@ export default {
     extend: {
       fontFamily: {
         display: ['Syne', 'sans-serif'],
-        body: ['DM Mono', 'monospace'],
+        body: ['Inter', 'sans-serif'],
+        mono: ['DM Mono', 'monospace'],
         serif: ['Instrument Serif', 'serif'],
       },
     },
