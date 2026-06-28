@@ -45,8 +45,10 @@ export default function Contact() {
       )
       setStatus('success')
       setForm({ name: '', email: '', message: '' })
+      setTimeout(() => setStatus('idle'), 6000)
     } catch {
       setStatus('error')
+      setTimeout(() => setStatus('idle'), 8000)
     }
   }
 
@@ -105,8 +107,9 @@ export default function Contact() {
         >
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Name</label>
+              <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Name</label>
               <input
+                id="contact-name"
                 type="text"
                 name="name"
                 value={form.name}
@@ -114,11 +117,13 @@ export default function Contact() {
                 placeholder="Your name"
                 required
                 className="contact-input"
+                autoComplete="name"
               />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Email</label>
+              <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Email</label>
               <input
+                id="contact-email"
                 type="email"
                 name="email"
                 value={form.email}
@@ -126,11 +131,13 @@ export default function Contact() {
                 placeholder="your@email.com"
                 required
                 className="contact-input"
+                autoComplete="email"
               />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Message</label>
+              <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest" style={{ color: 'var(--muted)' }}>Message</label>
               <textarea
+                id="contact-message"
                 name="message"
                 value={form.message}
                 onChange={handleChange}

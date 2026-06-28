@@ -121,9 +121,12 @@ export default function AIChat() {
                           ol: ({ children }) => <ol style={{ paddingLeft: 18, margin: '6px 0' }}>{children}</ol>,
                           li: ({ children }) => <li style={{ marginBottom: 3 }}>{children}</li>,
                           strong: ({ children }) => <strong style={{ color: 'var(--accent)' }}>{children}</strong>,
-                          code: ({ inline, children }) => inline
-                            ? <code style={{ background: 'rgba(34,211,238,0.1)', padding: '1px 5px', borderRadius: 3, fontSize: '0.9em' }}>{children}</code>
-                            : <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: 6, overflowX: 'auto', fontSize: '0.85em', margin: '6px 0' }}><code>{children}</code></pre>,
+                          code: ({ children }) => {
+                            const content = String(children).replace(/\n$/, '')
+                            return content.includes('\n')
+                              ? <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: 6, overflowX: 'auto', fontSize: '0.85em', margin: '6px 0' }}><code>{content}</code></pre>
+                              : <code style={{ background: 'rgba(34,211,238,0.1)', padding: '1px 5px', borderRadius: 3, fontSize: '0.9em' }}>{content}</code>
+                          },
                         }}
                       >
                         {msg.text || ''}
