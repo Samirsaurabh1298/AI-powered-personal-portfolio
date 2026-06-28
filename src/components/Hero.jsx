@@ -102,13 +102,13 @@ export default function Hero() {
           <motion.h1
             className="font-display font-extrabold leading-none mb-5 md:mb-6"
             style={{ fontSize: 'clamp(44px, 8vw, 96px)', letterSpacing: '-3px' }}
-            initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-            animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             Samir
-            <span className="hero-name-stroke">
-              Saur<span style={{ color: 'var(--accent)', WebkitTextStroke: 0 }}>abh</span>
+            <span className="hero-name-stroke" style={{ paddingRight: 4 }}>
+              Saur<span style={{ color: 'var(--accent)', WebkitTextStroke: '0px' }}>abh</span>
             </span>
           </motion.h1>
 
