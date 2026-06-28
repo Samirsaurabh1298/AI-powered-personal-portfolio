@@ -335,27 +335,25 @@ function BubbleContent({ voiceState, interimTranscript, showReply, lastBotText, 
 
   if (voiceState === 'greeting' || voiceState === 'speaking') {
     return (
-      <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.6, marginBottom: 6 }}>
-        {showReply
-          ? isStreaming
-            ? <>{lastBotText}<span className="typing-cursor-inline" /></>
-            : lastBotText
-          : <TypewriterText text="Hey, I'm Samir 👋 Ask me anything about my work or experience!" />
-        }
+      <div style={{ fontSize: 13, color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: 10, minHeight: 36, marginBottom: 6 }}>
+        <SpeakerWave />
+        <span style={{ color: 'var(--text)' }}>Samir is speaking...</span>
       </div>
     )
   }
 
   // idle
   if (showReply) {
+    const preview = lastBotText.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').slice(0, 90)
+    const clipped = lastBotText.length > 90
     return (
       <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.6, marginBottom: 10 }}>
-        {isStreaming ? <>{lastBotText}<span className="typing-cursor-inline" /></> : lastBotText}
-        {!isStreaming && (
-          <div style={{ marginTop: 8 }}>
-            <a href="#ai-chat" style={{ fontSize: 11, color: 'var(--accent)', textDecoration: 'none' }}>See full conversation ↓</a>
-          </div>
-        )}
+        {isStreaming
+          ? <>{lastBotText.slice(0, 90)}<span className="typing-cursor-inline" /></>
+          : <>{preview}{clipped && '...'}</>}
+        <div style={{ marginTop: 8 }}>
+          <a href="#ai-chat" style={{ fontSize: 11, color: 'var(--accent)', textDecoration: 'none' }}>See full conversation ↓</a>
+        </div>
       </div>
     )
   }
@@ -375,6 +373,35 @@ function MicIcon() {
       <line x1="12" y1="19" x2="12" y2="22" />
       <line x1="8" y1="22" x2="16" y2="22" />
     </svg>
+  )
+}
+
+function SpeakerWave() {
+  const bars = [
+    { height: 6, delay: 0 },
+    { height: 10, delay: 0.1 },
+    { height: 14, delay: 0.2 },
+    { height: 10, delay: 0.3 },
+    { height: 6, delay: 0.4 },
+  ]
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+      {bars.map((b, i) => (
+        <motion.span
+          key={i}
+          animate={{ scaleY: [0.4, 1, 0.4] }}
+          transition={{ duration: 0.7, repeat: Infinity, delay: b.delay, ease: 'easeInOut' }}
+          style={{
+            display: 'inline-block',
+            width: 3,
+            height: b.height,
+            background: 'var(--accent)',
+            borderRadius: 2,
+            transformOrigin: 'center',
+          }}
+        />
+      ))}
+    </span>
   )
 }
 
