@@ -93,6 +93,41 @@ export default function Contact() {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5 }}
         >
+          {/* LinkedIn social proof CTA */}
+          <motion.a
+            href="https://linkedin.com/in/samirsaurabh"
+            target="_blank"
+            rel="noreferrer"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24,
+              padding: '14px 18px',
+              background: 'rgba(34,211,238,0.05)',
+              border: '1px solid rgba(34,211,238,0.2)',
+              borderRadius: 8, textDecoration: 'none',
+              transition: 'border-color 0.2s, background 0.2s',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(34,211,238,0.4)'
+              ;(e.currentTarget as HTMLElement).style.background = 'rgba(34,211,238,0.08)'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(34,211,238,0.2)'
+              ;(e.currentTarget as HTMLElement).style.background = 'rgba(34,211,238,0.05)'
+            }}
+          >
+            <div style={{ width: 36, height: 36, background: '#0077b5', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>in</span>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 600 }}>Read recommendations →</div>
+              <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>Colleagues & managers on LinkedIn</div>
+            </div>
+          </motion.a>
+
           <div className="flex flex-col gap-4 mb-10">
             {CONTACT_LINKS.map(({ icon, href, label, external }) => (
               <a

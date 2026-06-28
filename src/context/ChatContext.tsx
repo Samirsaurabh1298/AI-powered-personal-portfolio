@@ -79,6 +79,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         })
       }
 
+      if (res.status === 503) throw new Error('AI service temporarily unavailable — use the contact form to reach me directly.')
       if (!res.ok) throw new Error('API error')
 
       const reader = res.body!.getReader()

@@ -1,9 +1,6 @@
 import { motion } from 'framer-motion'
 
-interface ProjectMetric {
-  val: string
-  label: string
-}
+interface Metric { val: string; label: string }
 
 interface Project {
   num: string
@@ -11,80 +8,93 @@ interface Project {
   stack: string[]
   name: string
   desc: string
-  metrics: ProjectMetric[]
+  challenge: string
+  approach: string
+  metrics: Metric[]
   nda: boolean
   url: string | null
-  github: string | null
 }
 
 const PROJECTS: Project[] = [
+  // ── Featured (live, public) ──────────────────────────────────────
   {
     num: '01',
-    accent: 'linear-gradient(90deg, #22d3ee, #3b82f6)',
-    stack: ['React.js', 'Redux', 'Tailwind', 'WebSocket'],
-    name: 'Ediig Auction Platform Revamp',
-    desc: 'Real-time auction platform with live countdown timers, WebSocket connections for live bidding, and complex global state management. Redesigned UI from scratch.',
-    metrics: [{ val: '45%', label: 'Perf Boost' }, { val: '30%', label: 'Engagement ↑' }, { val: '20%', label: 'Bounce ↓' }],
-    nda: true,
-    url: null,
-    github: null,
-  },
-  {
-    num: '02',
-    accent: 'linear-gradient(90deg, #3b82f6, #6c47ff)',
-    stack: ['React.js', 'Chart.js', 'Axios', 'FileSaver.js'],
-    name: 'Vehicle Inspection AI Platform',
-    desc: 'AI-powered vehicle inspection reporting dashboard with interactive Chart.js visualizations, advanced filtering, and multi-format export (PDF/CSV). Full error handling and retry logic.',
-    metrics: [{ val: 'PDF/CSV', label: 'Export' }, { val: 'AI', label: 'Integrated' }],
-    nda: true,
-    url: null,
-    github: null,
-  },
-  {
-    num: '03',
-    accent: 'linear-gradient(90deg, #6c47ff, #22d3ee)',
-    stack: ['React.js', 'Redux', 'Tailwind', 'SuiteCRM'],
-    name: 'Mahindra First Choice Website',
-    desc: 'High-performance marketing website achieving best-in-class Core Web Vitals. Mobile-first, dynamic modals, multi-step progress tracking, and critical CSS inlining.',
-    metrics: [{ val: '1.8s', label: 'LCP' }, { val: '14ms', label: 'FID' }, { val: '0.12', label: 'CLS' }],
-    nda: true,
-    url: null,
-    github: null,
-  },
-  {
-    num: '04',
-    accent: 'linear-gradient(90deg, #22d3ee, #f87171)',
-    stack: ['JavaScript ES6', 'SVG', 'HTML5', 'Bootstrap'],
-    name: 'Yard Management System (YMS)',
-    desc: 'Dynamic fractional star rating system with SVG manipulation and CSS animations. Configuration-driven theming with dynamic labels, badges, and brand-aligned descriptions.',
-    metrics: [{ val: 'SVG', label: 'Animated' }, { val: 'Config', label: 'Driven' }],
-    nda: true,
-    url: null,
-    github: null,
-  },
-  {
-    num: '05',
     accent: 'linear-gradient(90deg, #f87171, #f59e0b)',
     stack: ['React', 'Claude AI', 'TypeScript', 'Vercel'],
     name: 'ATS Resume Optimizer',
-    desc: 'AI-powered resume optimizer that analyzes job descriptions and rewrites resumes to pass ATS filters. Instant gap analysis in 30 seconds — achieving 3× higher interview rates.',
-    metrics: [{ val: '3×', label: 'More Interviews' }, { val: '30s', label: 'Analysis' }],
+    desc: 'AI resume optimizer that analyzes job descriptions and rewrites resumes to pass ATS filters — not keyword-stuffing, actual semantic rewriting.',
+    challenge: 'Most ATS tools keyword-stuff. Getting AI to understand requirement context and rewrite resume sections coherently — not just inject words — was the real engineering problem.',
+    approach: 'Claude AI for semantic gap analysis with streaming output. JD parser extracts requirement intent; AI cross-references resume sections and rewrites each with context-aware improvements.',
+    metrics: [{ val: '3×', label: 'Interview Rate' }, { val: '30s', label: 'Analysis' }, { val: 'Live', label: 'Production' }],
     nda: false,
     url: 'https://atsoptimizer-liard.vercel.app',
-    github: null,
+  },
+  {
+    num: '02',
+    accent: 'linear-gradient(90deg, #a78bfa, #ec4899)',
+    stack: ['React.js', 'TypeScript', 'Tailwind CSS', 'DnD API'],
+    name: 'TaskBoard',
+    desc: 'Minimal Kanban that gets out of your way — no bloat, no feature-creep. Just the interface you need to ship.',
+    challenge: 'Most task managers try to do everything and end up usable for nothing. The design constraint: maximum usefulness with minimum interface surface area.',
+    approach: 'React DnD with full keyboard support, optimistic localStorage persistence, TypeScript discriminated unions for card state. Zero external UI dependencies — every pixel deliberate.',
+    metrics: [{ val: 'Zero', label: 'UI Deps' }, { val: '100%', label: 'Keyboard' }, { val: 'Live', label: 'Production' }],
+    nda: false,
+    url: 'https://taskboard-taupe-five.vercel.app',
+  },
+
+  // ── Production @ scale (NDA) ─────────────────────────────────────
+  {
+    num: '03',
+    accent: 'linear-gradient(90deg, #22d3ee, #3b82f6)',
+    stack: ['React.js', 'Redux', 'Tailwind', 'WebSocket'],
+    name: 'Ediig Auction Platform',
+    desc: 'Real-time auction platform rebuilt from scratch — live bidding, synchronized countdowns, complex global state.',
+    challenge: 'Keeping bid state synchronized across concurrent users with zero desync — countdown timers can\'t drift, bids can\'t collide under high event frequency.',
+    approach: 'WebSocket pub/sub with optimistic UI + server-authoritative reconciliation. Debounced countdown timers and race condition guards eliminate collisions at scale.',
+    metrics: [{ val: '45%', label: 'Perf Boost' }, { val: '30%', label: 'Engagement ↑' }, { val: '20%', label: 'Bounce ↓' }],
+    nda: true,
+    url: null,
+  },
+  {
+    num: '04',
+    accent: 'linear-gradient(90deg, #3b82f6, #6c47ff)',
+    stack: ['React.js', 'Chart.js', 'Axios', 'FileSaver.js'],
+    name: 'Vehicle Inspection AI Platform',
+    desc: 'AI-powered inspection reporting dashboard with interactive visualizations, advanced filtering, and multi-format export.',
+    challenge: 'Multi-filter dashboards with AI-generated content needed consistent formatting across PDF and CSV exports — data integrity across format transforms at scale.',
+    approach: 'Virtualized tables with lazy pagination, Chart.js config abstraction layer, FileSaver.js streaming for large exports. AI via REST with structured JSON schemas for predictable output.',
+    metrics: [{ val: 'PDF/CSV', label: 'Export' }, { val: 'AI', label: 'Integrated' }, { val: '300K+', label: 'Users' }],
+    nda: true,
+    url: null,
+  },
+  {
+    num: '05',
+    accent: 'linear-gradient(90deg, #6c47ff, #22d3ee)',
+    stack: ['React.js', 'Redux', 'Tailwind', 'SuiteCRM'],
+    name: 'Mahindra First Choice Website',
+    desc: 'High-performance marketing website with industry-leading Core Web Vitals — the result of systematically hunting every millisecond.',
+    challenge: 'Content-heavy marketing site with images and third-party scripts needed LCP < 2s — load order of 8+ resource types had to be precisely orchestrated.',
+    approach: 'Critical CSS inlining, preconnect/preload hints, lazy hydration, aggressive bundle splitting, image optimization pipeline. Every delta traced in DevTools.',
+    metrics: [{ val: '1.8s', label: 'LCP' }, { val: '14ms', label: 'FID' }, { val: '0.12', label: 'CLS' }],
+    nda: true,
+    url: null,
   },
   {
     num: '06',
-    accent: 'linear-gradient(90deg, #a78bfa, #ec4899)',
-    stack: ['React.js', 'TypeScript', 'Tailwind', 'Drag & Drop'],
-    name: 'TaskBoard',
-    desc: 'Clean, minimal task management board for organizing work items with an intuitive drag-and-drop interface and distraction-free design.',
-    metrics: [{ val: 'DnD', label: 'Interface' }, { val: 'Clean', label: 'UI/UX' }],
-    nda: false,
-    url: 'https://taskboard-taupe-five.vercel.app',
-    github: null,
+    accent: 'linear-gradient(90deg, #22d3ee, #f87171)',
+    stack: ['JavaScript ES6', 'SVG', 'HTML5', 'CSS Custom Props'],
+    name: 'Yard Management System (YMS)',
+    desc: 'Dynamic fractional star ratings and complex UI theming — one codebase, multiple brand contexts, zero code forks.',
+    challenge: 'Fractional star ratings with multiple visual states had to work consistently across brand variants from a single config — no code duplication per brand.',
+    approach: 'Pure SVG manipulation with CSS custom properties for theming. Config-driven architecture means zero code changes for new brands — just a JSON update.',
+    metrics: [{ val: 'SVG', label: 'Animated' }, { val: '1 src', label: 'N brands' }, { val: 'Config', label: 'Driven' }],
+    nda: true,
+    url: null,
   },
 ]
+
+const featured = PROJECTS.filter(p => !p.nda)
+const production = PROJECTS.filter(p => p.nda)
 
 export default function Projects() {
   return (
@@ -100,65 +110,108 @@ export default function Projects() {
         Projects
       </motion.h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)' }}>
-        {PROJECTS.map(({ num, accent, stack, name, desc, metrics, nda, url, github }, index) => (
-          <motion.div
+      {/* ── Featured live projects ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', marginBottom: 1 }}>
+        {featured.map(({ num, accent, stack, name, desc, challenge, approach, metrics, url }, index) => (
+          <ProjectCard
             key={num}
-            className="project-card flex flex-col"
-            style={{ minHeight: 340 }}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.45, delay: (index % 3) * 0.1 }}
-            whileHover={{ y: -6, boxShadow: '0 16px 48px rgba(34,211,238,0.1)', transition: { duration: 0.25 } }}
-          >
-            <div className="project-accent-bar" style={{ background: accent }} />
-            <div className="project-num">{num}</div>
+            num={num} accent={accent} stack={stack} name={name} desc={desc}
+            challenge={challenge} approach={approach} metrics={metrics}
+            nda={false} url={url} index={index} featured
+          />
+        ))}
+      </div>
 
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {stack.map(t => <span key={t} className="tag">{t}</span>)}
-              {nda && (
-                <span className="tag" style={{ borderColor: 'rgba(248,113,113,0.4)', color: '#f87171', background: 'rgba(248,113,113,0.06)' }}>
-                  NDA
-                </span>
-              )}
-            </div>
+      {/* ── Production @ scale divider ── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '24px 0 0', marginBottom: 1 }}>
+        <div style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--muted)', whiteSpace: 'nowrap' }}>
+          Production @ Scale · NDA Protected
+        </div>
+        <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+      </div>
 
-            <div className="font-display font-bold mb-3 leading-tight" style={{ fontSize: 20, color: 'var(--text)' }}>
-              {name}
-            </div>
-
-            <p className="text-[13px] leading-loose flex-1" style={{ color: 'var(--muted)' }}>{desc}</p>
-
-            {nda && (
-              <p className="text-[11px] mt-2" style={{ color: 'rgba(248,113,113,0.6)' }}>
-                Internal project · Not publicly accessible
-              </p>
-            )}
-
-            <div className="flex gap-6 flex-wrap items-center pt-5 mt-5" style={{ borderTop: '1px solid var(--border)' }}>
-              {metrics.map(({ val, label }) => (
-                <div key={label}>
-                  <div className="font-display font-bold text-lg leading-none" style={{ color: 'var(--accent)' }}>{val}</div>
-                  <div className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'var(--muted)' }}>{label}</div>
-                </div>
-              ))}
-              <div className="flex gap-3 ml-auto">
-                {github && (
-                  <a href={github} target="_blank" rel="noreferrer" className="project-live-link">
-                    Code →
-                  </a>
-                )}
-                {url && (
-                  <a href={url} target="_blank" rel="noreferrer" className="project-live-link">
-                    View Live →
-                  </a>
-                )}
-              </div>
-            </div>
-          </motion.div>
+      {/* ── NDA production work ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)' }}>
+        {production.map(({ num, accent, stack, name, desc, challenge, approach, metrics, url }, index) => (
+          <ProjectCard
+            key={num}
+            num={num} accent={accent} stack={stack} name={name} desc={desc}
+            challenge={challenge} approach={approach} metrics={metrics}
+            nda url={url} index={index}
+          />
         ))}
       </div>
     </section>
+  )
+}
+
+function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metrics, nda, url, index, featured = false }: {
+  num: string; accent: string; stack: string[]; name: string; desc: string
+  challenge: string; approach: string; metrics: Metric[]
+  nda: boolean; url: string | null; index: number; featured?: boolean
+}) {
+  return (
+    <motion.div
+      className="project-card flex flex-col"
+      style={{ minHeight: featured ? 400 : 340 }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.45, delay: (index % 2) * 0.1 }}
+      whileHover={{ y: -4, boxShadow: '0 16px 48px rgba(34,211,238,0.09)', transition: { duration: 0.22 } }}
+    >
+      <div className="project-accent-bar" style={{ background: accent }} />
+      <div className="project-num">{num}</div>
+
+      {/* Tags */}
+      <div className="flex flex-wrap gap-1.5 mb-4">
+        {stack.map(t => <span key={t} className="tag">{t}</span>)}
+        {nda ? (
+          <span className="tag" style={{ borderColor: 'rgba(248,113,113,0.4)', color: '#f87171', background: 'rgba(248,113,113,0.06)' }}>NDA</span>
+        ) : (
+          <span className="tag" style={{ borderColor: 'rgba(74,222,128,0.4)', color: '#4ade80', background: 'rgba(74,222,128,0.06)' }}>Live</span>
+        )}
+      </div>
+
+      <div className="font-display font-bold leading-tight mb-2" style={{ fontSize: featured ? 22 : 19, color: 'var(--text)' }}>
+        {name}
+      </div>
+
+      <p className="text-[13px] leading-loose mb-4" style={{ color: 'var(--muted)' }}>{desc}</p>
+
+      {/* Engineering story */}
+      <div className="flex flex-col gap-3 flex-1" style={{ borderTop: '1px solid var(--border)', paddingTop: 14 }}>
+        <div>
+          <div className="text-[10px] uppercase tracking-widest mb-1.5 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+            <span>⚡</span> The Challenge
+          </div>
+          <p className="text-[12px] leading-relaxed" style={{ color: 'var(--muted)' }}>{challenge}</p>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-widest mb-1.5 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+            <span>⚙</span> My Approach
+          </div>
+          <p className="text-[12px] leading-relaxed" style={{ color: 'var(--muted)' }}>{approach}</p>
+        </div>
+      </div>
+
+      {/* Metrics + link */}
+      <div className="flex gap-5 flex-wrap items-center pt-4 mt-4" style={{ borderTop: '1px solid var(--border)' }}>
+        {metrics.map(({ val, label }) => (
+          <div key={label}>
+            <div className="font-display font-bold text-base leading-none" style={{ color: 'var(--accent)' }}>{val}</div>
+            <div className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'var(--muted)' }}>{label}</div>
+          </div>
+        ))}
+        {url && (
+          <a href={url} target="_blank" rel="noreferrer" className="project-live-link ml-auto">
+            View Live →
+          </a>
+        )}
+        {nda && (
+          <span className="text-[11px] ml-auto" style={{ color: 'rgba(248,113,113,0.5)' }}>Internal · Not public</span>
+        )}
+      </div>
+    </motion.div>
   )
 }

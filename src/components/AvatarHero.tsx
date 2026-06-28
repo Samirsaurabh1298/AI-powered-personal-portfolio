@@ -243,7 +243,7 @@ export default function AvatarHero() {
           ) : (
             /* Idle: voice CTA + text fallback */
             <>
-              {isSupported && (
+              {isSupported ? (
                 <button
                   onClick={startVoiceExperience}
                   className="meet-samir-btn"
@@ -252,6 +252,10 @@ export default function AvatarHero() {
                   <MicIcon />
                   Click to meet me
                 </button>
+              ) : (
+                <p style={{ fontSize: 10, color: 'var(--muted)', textAlign: 'center', marginBottom: 4, letterSpacing: '0.03em' }}>
+                  🎙 Voice available in Chrome &amp; Edge
+                </p>
               )}
               <div className="mini-chat-input-row" style={{ marginTop: isSupported ? 6 : 0 }}>
                 <input
