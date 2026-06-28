@@ -1,0 +1,16 @@
+AVATAR PHOTO PLACEHOLDER
+========================
+
+The AvatarHero component (src/components/AvatarHero.jsx) references `/samir-avatar.jpg`.
+
+ACTION REQUIRED:
+  Place your professional headshot at:
+    public/samir-avatar.jpg
+
+Until then, the SVG fallback at public/samir-avatar.svg will be used
+(a dark circle with "SS" initials in cyan).
+
+Recommended photo specs:
+  - Format: JPEG (.jpg)
+  - Dimensions: 400×400 px minimum (square crop preferred)
+  - File size: < 500 KB for fast load
