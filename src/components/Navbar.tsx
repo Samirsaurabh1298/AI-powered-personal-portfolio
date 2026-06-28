@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
 
-const NAV_LINKS = [
+interface NavLink {
+  id: string
+  label: string
+}
+
+const NAV_LINKS: NavLink[] = [
   { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },

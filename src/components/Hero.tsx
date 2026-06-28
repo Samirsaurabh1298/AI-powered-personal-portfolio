@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
 import AvatarHero from './AvatarHero'
+import type { AnimatedStatProps } from '../types'
 
 const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -23,20 +24,20 @@ async function notifyResumeDownload() {
   }
 }
 
-const STATS = [
-  { value: 4, suffix: '+', label: 'Years Experience' },
-  { value: 300, suffix: 'K+', label: 'Monthly Users' },
-  { value: 35, suffix: '%', label: 'Perf Improvement' },
-  { value: 1.8, suffix: 's', label: 'LCP Achieved' },
+const STATS: AnimatedStatProps[] = [
+  { value: 4, suffix: '+', label: 'Years Experience', delay: 600 },
+  { value: 300, suffix: 'K+', label: 'Monthly Users', delay: 700 },
+  { value: 35, suffix: '%', label: 'Perf Improvement', delay: 800 },
+  { value: 1.8, suffix: 's', label: 'LCP Achieved', delay: 900 },
 ]
 
-function AnimatedStat({ value, suffix, label, delay }) {
+function AnimatedStat({ value, suffix, label, delay }: AnimatedStatProps) {
   const [displayed, setDisplayed] = useState(0)
 
   useEffect(() => {
     const duration = 1500
     const start = performance.now()
-    const animate = (now) => {
+    const animate = (now: number) => {
       const progress = Math.min((now - start) / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
       setDisplayed(eased * value)
@@ -123,8 +124,8 @@ export default function Hero() {
           </motion.p>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-5 md:flex md:gap-10 mb-10 md:mb-12">
-            {STATS.map(({ value, suffix, label }, i) => (
-              <AnimatedStat key={label} value={value} suffix={suffix} label={label} delay={600 + i * 100} />
+            {STATS.map(({ value, suffix, label, delay }) => (
+              <AnimatedStat key={label} value={value} suffix={suffix} label={label} delay={delay} />
             ))}
           </div>
 

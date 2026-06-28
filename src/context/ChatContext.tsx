@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useRef, useCallback } from 'react'
+import type { Message, ChatContextType } from '../types'
 
-const ChatContext = createContext(null)
+const ChatContext = createContext<ChatContextType | null>(null)
 
 const SYSTEM_CONTEXT_DEV = `You are an AI assistant for Samir Saurabh's portfolio. Answer in first person as Samir. Be concise and professional. Keep answers under 150 words unless asked for details. Use markdown for lists and emphasis when helpful.
 
@@ -10,7 +11,7 @@ function getTime() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
-function parseSSELine(line) {
+function parseSSELine(line: string): string | null {
   if (!line.startsWith('data: ')) return null
   const data = line.slice(6)
   if (data === '[DONE]') return null
@@ -22,8 +23,8 @@ function parseSSELine(line) {
   }
 }
 
-export function ChatProvider({ children }) {
-  const [messages, setMessages] = useState([
+export function ChatProvider({ children }: { children: React.ReactNode }) {
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: 'bot',
       text: "Hey, I'm Samir 👋 Welcome to my portfolio. Ask me anything about my experience, skills, or projects!",
@@ -31,19 +32,19 @@ export function ChatProvider({ children }) {
     },
   ])
   const [isStreaming, setIsStreaming] = useState(false)
-  const historyRef = useRef([])
+  const historyRef = useRef<{ role: string; content: string }[]>([])
 
-  const sendMessage = useCallback(async (text) => {
+  const sendMessage = useCallback(async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed || isStreaming) return
 
-    const userMsg = { role: 'user', text: trimmed, time: getTime() }
+    const userMsg: Message = { role: 'user', text: trimmed, time: getTime() }
     setMessages(prev => [...prev, userMsg])
     const newHistory = [...historyRef.current, { role: 'user', content: trimmed }]
     historyRef.current = newHistory
     setIsStreaming(true)
 
-    const botPlaceholder = { role: 'bot', text: '', time: getTime() }
+    const botPlaceholder: Message = { role: 'bot', text: '', time: getTime() }
     setMessages(prev => [...prev, botPlaceholder])
 
     try {
@@ -77,7 +78,7 @@ export function ChatProvider({ children }) {
 
       if (!res.ok) throw new Error('API error')
 
-      const reader = res.body.getReader()
+      const reader = res.body!.getReader()
       const decoder = new TextDecoder()
       let buffer = ''
       let accumulated = ''
@@ -87,7 +88,7 @@ export function ChatProvider({ children }) {
         if (done) break
         buffer += decoder.decode(value, { stream: true })
         const lines = buffer.split('\n')
-        buffer = lines.pop()
+        buffer = lines.pop()!
         for (const line of lines) {
           const content = parseSSELine(line.trim())
           if (content) {
@@ -107,7 +108,7 @@ export function ChatProvider({ children }) {
         const updated = [...prev]
         updated[updated.length - 1] = {
           ...updated[updated.length - 1],
-          text: `Sorry, something went wrong. Please try again. (${err.message})`,
+          text: `Sorry, something went wrong. Please try again. (${(err as Error).message})`,
         }
         return updated
       })
@@ -132,7 +133,7 @@ export function ChatProvider({ children }) {
   )
 }
 
-export function useChat() {
+export function useChat(): ChatContextType {
   const ctx = useContext(ChatContext)
   if (!ctx) throw new Error('useChat must be used within ChatProvider')
   return ctx

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import avatarImg from '../assets/samir-avatar.jpeg'
 import { useChat } from '../context/ChatContext'
+import type { TypewriterTextProps } from '../types'
 
 const SUGGESTIONS = [
   'React performance?',
@@ -11,12 +12,12 @@ const SUGGESTIONS = [
 ]
 
 export default function AvatarHero() {
-  const containerRef = useRef(null)
-  const eyeRef = useRef(null)
-  const animFrameRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const eyeRef = useRef<HTMLDivElement>(null)
+  const animFrameRef = useRef<number>(0)
   const currentPos = useRef({ x: 0, y: 0 })
   const targetPos = useRef({ x: 0, y: 0 })
-  const blinkTimerRef = useRef(null)
+  const blinkTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const [isBlinking, setIsBlinking] = useState(false)
   const [showBubble, setShowBubble] = useState(false)
@@ -35,7 +36,7 @@ export default function AvatarHero() {
     const isTouchDevice = window.matchMedia('(hover: none)').matches
     if (isTouchDevice) return
 
-    const handleMouse = (e) => {
+    const handleMouse = (e: MouseEvent) => {
       if (!containerRef.current) return
       const rect = containerRef.current.getBoundingClientRect()
       const cx = rect.left + rect.width / 2
@@ -46,7 +47,7 @@ export default function AvatarHero() {
     }
     window.addEventListener('mousemove', handleMouse)
 
-    const lerp = (a, b, t) => a + (b - a) * t
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t
     const loop = () => {
       currentPos.current.x = lerp(currentPos.current.x, targetPos.current.x, 0.08)
       currentPos.current.y = lerp(currentPos.current.y, targetPos.current.y, 0.08)
@@ -76,7 +77,9 @@ export default function AvatarHero() {
       }, delay)
     }
     scheduleBlink()
-    return () => clearTimeout(blinkTimerRef.current)
+    return () => {
+      if (blinkTimerRef.current) clearTimeout(blinkTimerRef.current)
+    }
   }, [])
 
   const handleSend = () => {
@@ -86,7 +89,7 @@ export default function AvatarHero() {
     }
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
@@ -178,7 +181,7 @@ export default function AvatarHero() {
               <input
                 type="text"
                 value={miniInput}
-                onChange={e => setMiniInput(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMiniInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask me anything..."
                 disabled={isStreaming}
@@ -217,7 +220,7 @@ export default function AvatarHero() {
   )
 }
 
-function TypewriterText({ text }) {
+function TypewriterText({ text }: TypewriterTextProps) {
   const [displayed, setDisplayed] = useState('')
   useEffect(() => {
     let i = 0

@@ -1,6 +1,23 @@
 import { motion } from 'framer-motion'
 
-const PROJECTS = [
+interface ProjectMetric {
+  val: string
+  label: string
+}
+
+interface Project {
+  num: string
+  accent: string
+  stack: string[]
+  name: string
+  desc: string
+  metrics: ProjectMetric[]
+  nda: boolean
+  url: string | null
+  github: string | null
+}
+
+const PROJECTS: Project[] = [
   {
     num: '01',
     accent: 'linear-gradient(90deg, #22d3ee, #3b82f6)',

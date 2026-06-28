@@ -15,7 +15,7 @@ const SUGGESTIONS = [
 export default function AIChat() {
   const { messages, sendMessage, isStreaming, clearChat } = useChat()
   const [input, setInput] = useState('')
-  const messagesRef = useRef(null)
+  const messagesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (messagesRef.current) {
@@ -30,7 +30,7 @@ export default function AIChat() {
     setInput('')
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
@@ -159,11 +159,12 @@ export default function AIChat() {
               aria-label="Ask the AI assistant a question"
               rows={1}
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              onInput={e => {
-                e.target.style.height = 'auto'
-                e.target.style.height = Math.min(e.target.scrollHeight, 100) + 'px'
+              onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+                const target = e.target as HTMLTextAreaElement
+                target.style.height = 'auto'
+                target.style.height = Math.min(target.scrollHeight, 100) + 'px'
               }}
               disabled={isStreaming}
             />

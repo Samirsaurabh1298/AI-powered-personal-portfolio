@@ -6,28 +6,48 @@ const EMAILJS_SERVICE_ID       = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_PUBLIC_KEY       = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 const EMAILJS_CONTACT_TEMPLATE = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID
 
-const CONTACT_LINKS = [
+interface ContactLink {
+  icon: string
+  href: string
+  label: string
+  external?: boolean
+}
+
+interface InfoCard {
+  label: string
+  value: string
+  sub?: string
+  accent?: boolean
+}
+
+interface ContactForm {
+  name: string
+  email: string
+  message: string
+}
+
+const CONTACT_LINKS: ContactLink[] = [
   { icon: '✉', href: 'mailto:samirsaurabh.dev@gmail.com', label: 'samirsaurabh.dev@gmail.com' },
   { icon: 'in', href: 'https://linkedin.com/in/samirsaurabh', label: 'linkedin.com/in/samirsaurabh', external: true },
   { icon: '⌥', href: 'https://github.com/Samirsaurabh1298', label: 'github.com/Samirsaurabh1298', external: true },
   { icon: '✆', href: 'tel:+916200432657', label: '+91 6200432657' },
 ]
 
-const INFO_CARDS = [
+const INFO_CARDS: InfoCard[] = [
   { label: 'Location', value: 'Bangalore, India' },
   { label: 'Availability', value: 'Open to Opportunities', accent: true },
   { label: 'Education', value: 'B.Tech Computer Science', sub: 'School of Research and Technology, Bhopal · 2020' },
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [form, setForm] = useState<ContactForm>({ name: '', email: '', message: '' })
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!form.name || !form.email || !form.message) return
     setStatus('sending')

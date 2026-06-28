@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion'
 
-const EXPERIENCE = [
+interface ExperienceItem {
+  period: string
+  role: string
+  company: string
+  bullets: string[]
+}
+
+const EXPERIENCE: ExperienceItem[] = [
   {
     period: 'Apr 2022 — Present',
     role: 'Software Engineer',

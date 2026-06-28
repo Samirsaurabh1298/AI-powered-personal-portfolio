@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion'
 
-const SKILLS = [
+interface Skill {
+  icon: string
+  name: string
+  desc: string
+  tags: string[]
+}
+
+const SKILLS: Skill[] = [
   { icon: '⚛️', name: 'Core Frontend', desc: 'Building responsive, accessible, pixel-perfect UIs with modern React patterns and strict TypeScript.', tags: ['React.js', 'TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3'] },
   { icon: '🎨', name: 'UI & Styling', desc: 'Crafting design systems and component libraries with utility-first and component-driven CSS approaches.', tags: ['Tailwind CSS', 'Material-UI', 'Bootstrap', 'Formik'] },
   { icon: '⚡', name: 'Performance', desc: 'Core Web Vitals obsessive — LCP, FID, CLS optimization through code splitting, lazy loading, and memoization.', tags: ['Core Web Vitals', 'Lazy Loading', 'Code Splitting', 'Webpack', 'Vite'] },
