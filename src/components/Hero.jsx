@@ -24,7 +24,7 @@ async function notifyResumeDownload() {
 }
 
 const STATS = [
-  { value: 3, suffix: '+', label: 'Years Experience' },
+  { value: 4, suffix: '+', label: 'Years Experience' },
   { value: 300, suffix: 'K+', label: 'Monthly Users' },
   { value: 35, suffix: '%', label: 'Perf Improvement' },
   { value: 1.8, suffix: 's', label: 'LCP Achieved' },
