@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
 import { ChatProvider } from './context/ChatContext'
+import { VoiceProvider } from './context/VoiceContext'
 import Cursor from './components/Cursor'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -41,7 +42,9 @@ export default function App() {
       <a href="#main-content" className="skip-to-content">Skip to main content</a>
       <ThemeProvider>
         <ChatProvider>
-          <Portfolio />
+          <VoiceProvider>
+            <Portfolio />
+          </VoiceProvider>
         </ChatProvider>
       </ThemeProvider>
     </>

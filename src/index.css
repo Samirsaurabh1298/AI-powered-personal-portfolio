@@ -698,6 +698,54 @@ html.light .chat-input { background: var(--bg2); }
   margin: 0;
 }
 
+/* ── Voice UI ── */
+.meet-samir-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 9px 16px;
+  background: linear-gradient(135deg, rgba(34,211,238,0.12), rgba(34,211,238,0.06));
+  border: 1px solid rgba(34,211,238,0.38);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  animation: voiceButtonGlow 2.5s ease-in-out infinite;
+}
+.meet-samir-btn:hover {
+  background: linear-gradient(135deg, rgba(34,211,238,0.22), rgba(34,211,238,0.12));
+  border-color: rgba(34,211,238,0.65);
+  transform: translateY(-1px);
+  animation: none;
+}
+html.light .meet-samir-btn {
+  background: linear-gradient(135deg, rgba(74,144,226,0.1), rgba(74,144,226,0.05));
+  border-color: rgba(74,144,226,0.35);
+}
+@keyframes voiceButtonGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(34,211,238,0); }
+  50% { box-shadow: 0 0 12px rgba(34,211,238,0.22); }
+}
+
+.voice-stop-btn {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.28);
+  color: #ef4444;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background 0.15s;
+}
+.voice-stop-btn:hover { background: rgba(239,68,68,0.18); }
+
 /* ── Focus-visible ring (keyboard nav) ── */
 :focus-visible {
   outline: 2px solid var(--accent);

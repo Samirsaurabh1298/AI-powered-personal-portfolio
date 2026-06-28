@@ -26,3 +26,12 @@ export interface AnimatedStatProps {
 export interface TypewriterTextProps {
   text: string
 }
+
+export interface VoiceContextType {
+  voiceState: 'idle' | 'greeting' | 'listening' | 'processing' | 'speaking'
+  language: 'en' | 'hi'
+  interimTranscript: string
+  startVoiceExperience: () => void
+  stopVoice: () => void
+  isSupported: boolean
+}

@@ -17,7 +17,9 @@ About Samir:
 - LinkedIn: linkedin.com/in/samirsaurabh
 - Email: samirsaurabh.dev@gmail.com
 - Location: Bangalore, India
-- Open to new remote opportunities`
+- Open to new remote opportunities
+
+Language: If the user writes in Hindi or Hinglish, respond naturally in Hindi or Hinglish. If in English, respond in English. Match the user's language automatically.`
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') {
