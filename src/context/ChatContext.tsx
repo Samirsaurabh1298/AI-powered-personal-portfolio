@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useRef, useCallback } from 'react'
+import { createContext, useContext, useState, useRef, useCallback, type ReactNode } from 'react'
 import type { Message, ChatContextType } from '../types'
 
 const ChatContext = createContext<ChatContextType | null>(null)
@@ -23,7 +23,7 @@ function parseSSELine(line: string): string | null {
   }
 }
 
-export function ChatProvider({ children }: { children: React.ReactNode }) {
+export function ChatProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'bot',
