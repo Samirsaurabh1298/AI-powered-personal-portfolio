@@ -86,7 +86,7 @@ export default function Hero() {
       <div className="absolute pointer-events-none" style={{ width: 700, height: 700, background: 'radial-gradient(circle, rgba(0,229,255,0.05) 0%, transparent 70%)', top: '50%', left: '40%', transform: 'translate(-50%,-50%)' }} />
       <div className="absolute pointer-events-none hidden md:block" style={{ width: 400, height: 400, background: 'radial-gradient(circle, rgba(123,97,255,0.07) 0%, transparent 70%)', top: '15%', right: '5%' }} />
 
-      <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center" style={{ maxWidth: 1100 }}>
+      <div className="relative z-10 w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center" style={{ maxWidth: 1100 }}>
 
         {/* LEFT — text content */}
         <div>
