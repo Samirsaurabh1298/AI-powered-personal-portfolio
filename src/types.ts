@@ -29,7 +29,6 @@ export interface TypewriterTextProps {
 
 export interface VoiceContextType {
   voiceState: 'idle' | 'greeting' | 'listening' | 'processing' | 'speaking'
-  language: 'en' | 'hi'
   interimTranscript: string
   startVoiceExperience: () => void
   stopVoice: () => void

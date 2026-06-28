@@ -38,7 +38,7 @@ export default function AvatarHero() {
   const [showTextInput, setShowTextInput] = useState(false)
 
   const { sendMessage, isStreaming, messages } = useChat()
-  const { voiceState, language, interimTranscript, startVoiceExperience, stopVoice, isSupported } = useVoice()
+  const { voiceState, interimTranscript, startVoiceExperience, stopVoice, isSupported } = useVoice()
 
   const isVoiceActive = voiceState !== 'idle'
   const ringColor = RING_COLORS[voiceState] || RING_COLORS.idle
@@ -224,7 +224,7 @@ export default function AvatarHero() {
           {isVoiceActive ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
               <span style={{ fontSize: 10, color: 'var(--accent)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                {language === 'hi' ? '🎙 हिंदी' : '🎙 EN'}
+                🎙 Voice Active
               </span>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 {!showTextInput && (

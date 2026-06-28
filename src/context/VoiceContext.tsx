@@ -2,11 +2,9 @@ import { createContext, useContext, useState, useRef, useCallback, useEffect, ty
 import { useChat } from './ChatContext'
 
 type VoiceState = 'idle' | 'greeting' | 'listening' | 'processing' | 'speaking'
-type Lang = 'en' | 'hi'
 
 export interface VoiceContextType {
   voiceState: VoiceState
-  language: Lang
   interimTranscript: string
   startVoiceExperience: () => void
   stopVoice: () => void
@@ -21,18 +19,7 @@ export function useVoice(): VoiceContextType {
   return ctx
 }
 
-const GREETINGS: Record<Lang, string> = {
-  en: "Hey! I'm Samir. Welcome to my portfolio. I'm a Frontend Engineer with 4 years of experience in React and TypeScript, building apps for hundreds of thousands of users. Feel free to ask me anything about my work or projects!",
-  hi: "नमस्ते! मैं समीर हूं। मेरे पोर्टफोलियो में आपका स्वागत है। मैं 4 साल से React और TypeScript में काम कर रहा हूं। आप मुझसे अपने काम या projects के बारे में कुछ भी पूछ सकते हैं।",
-}
-
-function detectLang(text: string): Lang {
-  if (/[ऀ-ॿ]/.test(text)) return 'hi'
-  const words = text.toLowerCase().split(/\s+/)
-  const hindiWords = ['kya', 'hai', 'haan', 'nahi', 'aap', 'mujhe', 'batao', 'theek', 'accha', 'bolo', 'karo', 'yeh', 'woh', 'tum', 'mera', 'tera', 'tumhara', 'chahiye']
-  if (hindiWords.some(w => words.includes(w))) return 'hi'
-  return 'en'
-}
+const GREETING = "Hey! I'm Samir. Welcome to my portfolio. I'm a Frontend Engineer with 4 years of experience in React and TypeScript, building apps for hundreds of thousands of users. Feel free to ask me anything about my work or projects!"
 
 function stripMarkdown(text: string): string {
   return text
@@ -50,7 +37,6 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   const { sendMessage, messages, isStreaming } = useChat()
 
   const [voiceState, setVoiceState] = useState<VoiceState>('idle')
-  const [language, setLanguage] = useState<Lang>('en')
   const [interimTranscript, setInterimTranscript] = useState('')
   const [isSupported] = useState(() =>
     typeof window !== 'undefined' &&
@@ -59,13 +45,11 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   )
 
   const voiceStateRef = useRef<VoiceState>('idle')
-  const languageRef = useRef<Lang>('en')
   const recognitionRef = useRef<any>(null)
   const hasStartedRef = useRef(false)
   const startListeningRef = useRef<() => void>(() => {})
 
   useEffect(() => { voiceStateRef.current = voiceState }, [voiceState])
-  useEffect(() => { languageRef.current = language }, [language])
 
   // Chrome SpeechSynthesis 15s cut-off bug workaround
   useEffect(() => {
@@ -83,17 +67,16 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
     const cleaned = stripMarkdown(text)
     if (!cleaned) return
 
-    const lang = languageRef.current
     const utterance = new SpeechSynthesisUtterance(cleaned)
-    utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US'
+    utterance.lang = 'en-US'
     utterance.rate = 0.88
     utterance.pitch = 1.0
     utterance.volume = 1.0
 
     const voices = window.speechSynthesis.getVoices()
     const voice =
-      voices.find(v => v.lang.startsWith(lang === 'hi' ? 'hi' : 'en') && v.name.toLowerCase().includes('google')) ||
-      voices.find(v => v.lang.startsWith(lang === 'hi' ? 'hi' : 'en'))
+      voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('google')) ||
+      voices.find(v => v.lang.startsWith('en'))
     if (voice) utterance.voice = voice
 
     setVoiceState('speaking')
@@ -117,7 +100,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
     setVoiceState('listening')
     setInterimTranscript('')
 
-    rec.lang = languageRef.current === 'hi' ? 'hi-IN' : 'en-US'
+    rec.lang = 'en-US'
     rec.continuous = false
     rec.interimResults = true
 
@@ -131,8 +114,6 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
       }
       setInterimTranscript(interim || final)
       if (final) {
-        const detected = detectLang(final)
-        if (detected !== languageRef.current) setLanguage(detected)
         setInterimTranscript('')
         setVoiceState('processing')
         sendMessage(final)
@@ -177,7 +158,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
     recognitionRef.current = new SpeechRec()
     setVoiceState('greeting')
 
-    const doGreet = () => speak(GREETINGS[languageRef.current])
+    const doGreet = () => speak(GREETING)
     if (window.speechSynthesis.getVoices().length > 0) {
       doGreet()
     } else {
@@ -197,7 +178,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <VoiceCtx.Provider value={{ voiceState, language, interimTranscript, startVoiceExperience, stopVoice, isSupported }}>
+    <VoiceCtx.Provider value={{ voiceState, interimTranscript, startVoiceExperience, stopVoice, isSupported }}>
       {children}
     </VoiceCtx.Provider>
   )
