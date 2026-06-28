@@ -42,9 +42,34 @@ const PROJECTS: Project[] = [
     url: 'https://taskboard-taupe-five.vercel.app',
   },
 
-  // ── Production @ scale (NDA) ─────────────────────────────────────
   {
     num: '03',
+    accent: 'linear-gradient(90deg, #06b6d4, #0ea5e9)',
+    stack: ['React', 'TypeScript', 'LLM APIs', 'Tailwind CSS'],
+    name: 'Vynora — AI-Native HR Platform',
+    desc: 'Not another HRMS — every module, every workflow, every interaction powered by real-time LLM intelligence. 20 live modules covering Skills Gap Analysis, Interview Copilot, Bias Detection, Policy Q&A, Wellbeing Insights, and more. Built for Mahindra.',
+    challenge: 'Every module had to run on live LLM intelligence, not canned rules — Skills Gap, Wellbeing Insights, Bias Detection all need context from each other. Getting 20 modules to share streaming AI state without latency kills the experience.',
+    approach: 'Streaming LLM responses across all modules with a shared intelligence layer. 100% in-house infrastructure (Data Never Leaves), DPDP-compliant — responses are generated from internal context, not sent to third-party clouds.',
+    metrics: [{ val: '20', label: 'Live Modules' }, { val: 'LLM', label: 'Every Feature' }, { val: 'DPDP', label: 'Compliant' }],
+    nda: false,
+    url: 'https://vynora-wheat.vercel.app/',
+  },
+  {
+    num: '04',
+    accent: 'linear-gradient(90deg, #10b981, #06b6d4)',
+    stack: ['React', 'TypeScript', 'Jira API', 'Vercel'],
+    name: 'Qalyst',
+    desc: 'Jira-connected AI platform that eliminates all non-code writing. Developers get AI implementation plans. QA gets AI test scenarios. Results sync back to Jira automatically — no planning docs, no test spreadsheets, no context switching.',
+    challenge: 'Planning docs and test spreadsheets exist because writing them is unavoidable — but they don\'t ship features. Making AI-generated plans accurate enough that devs actually trust them, not just use them as a starting point to rewrite.',
+    approach: 'Jira OAuth loads active sprint tickets for the whole team. AI reads ticket descriptions and generates implementation plans (files to change, edge cases) and test scenarios (happy path, error states, edge cases). Results post back as formatted Jira comments — full traceability from ticket to result.',
+    metrics: [{ val: 'Jira', label: 'Connected' }, { val: 'AI', label: 'Plans + Tests' }, { val: 'Zero', label: 'Manual Writing' }],
+    nda: false,
+    url: 'https://autoqa-coral.vercel.app/login',
+  },
+
+  // ── Production @ scale (NDA) ─────────────────────────────────────
+  {
+    num: '05',
     accent: 'linear-gradient(90deg, #22d3ee, #3b82f6)',
     stack: ['React.js', 'Redux', 'Tailwind', 'WebSocket'],
     name: 'Ediig Auction Platform',
@@ -56,7 +81,7 @@ const PROJECTS: Project[] = [
     url: null,
   },
   {
-    num: '04',
+    num: '06',
     accent: 'linear-gradient(90deg, #3b82f6, #6c47ff)',
     stack: ['React.js', 'Chart.js', 'Axios', 'FileSaver.js'],
     name: 'Vehicle Inspection AI Platform',
@@ -68,7 +93,7 @@ const PROJECTS: Project[] = [
     url: null,
   },
   {
-    num: '05',
+    num: '07',
     accent: 'linear-gradient(90deg, #6c47ff, #22d3ee)',
     stack: ['React.js', 'Redux', 'Tailwind', 'SuiteCRM'],
     name: 'Mahindra First Choice Website',
@@ -80,7 +105,7 @@ const PROJECTS: Project[] = [
     url: null,
   },
   {
-    num: '06',
+    num: '08',
     accent: 'linear-gradient(90deg, #22d3ee, #f87171)',
     stack: ['JavaScript ES6', 'SVG', 'HTML5', 'CSS Custom Props'],
     name: 'Yard Management System (YMS)',
