@@ -32,16 +32,18 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     },
   ])
   const [isStreaming, setIsStreaming] = useState(false)
+  const isStreamingRef = useRef(false)
   const historyRef = useRef<{ role: string; content: string }[]>([])
 
   const sendMessage = useCallback(async (text: string) => {
     const trimmed = text.trim()
-    if (!trimmed || isStreaming) return
+    if (!trimmed || isStreamingRef.current) return
 
     const userMsg: Message = { role: 'user', text: trimmed, time: getTime() }
     setMessages(prev => [...prev, userMsg])
     const newHistory = [...historyRef.current, { role: 'user', content: trimmed }]
     historyRef.current = newHistory
+    isStreamingRef.current = true
     setIsStreaming(true)
 
     const botPlaceholder: Message = { role: 'bot', text: '', time: getTime() }
@@ -113,9 +115,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         return updated
       })
     } finally {
+      isStreamingRef.current = false
       setIsStreaming(false)
     }
-  }, [isStreaming])
+  }, [])
 
   const clearChat = useCallback(() => {
     historyRef.current = []

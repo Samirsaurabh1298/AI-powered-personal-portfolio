@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import avatarImg from '../assets/samir-avatar.jpeg'
 import { useChat } from '../context/ChatContext'
@@ -97,7 +97,7 @@ export default function AvatarHero() {
   }
 
   // Latest bot reply (not the greeting)
-  const lastBotMsg = messages.filter(m => m.role === 'bot').slice(-1)[0]
+  const lastBotMsg = useMemo(() => messages.filter((m: any) => m.role === 'bot').slice(-1)[0], [messages])
   const showReply = messages.length > 1 && lastBotMsg
 
   return (
@@ -114,7 +114,7 @@ export default function AvatarHero() {
             src={avatarImg}
             alt="Samir Saurabh"
             fetchPriority="high"
-            animate={{ scaleY: isBlinking ? 0.92 : 1 }}
+            animate={{ scaleY: isBlinking ? 0.08 : 1 }}
             transition={{ duration: 0.08 }}
             style={{
               width: '100%',
@@ -222,15 +222,20 @@ export default function AvatarHero() {
 
 function TypewriterText({ text }: TypewriterTextProps) {
   const [displayed, setDisplayed] = useState('')
+  const [done, setDone] = useState(false)
   useEffect(() => {
     let i = 0
     setDisplayed('')
-    const interval = setInterval(() => {
+    setDone(false)
+    const id = setInterval(() => {
       i++
       setDisplayed(text.slice(0, i))
-      if (i >= text.length) clearInterval(interval)
+      if (i >= text.length) {
+        clearInterval(id)
+        setDone(true)
+      }
     }, 28)
-    return () => clearInterval(interval)
+    return () => clearInterval(id)
   }, [text])
-  return <span>{displayed}<span className="typing-cursor-inline" /></span>
+  return <span>{done ? text : displayed}{!done && <span className="typing-cursor-inline" />}</span>
 }

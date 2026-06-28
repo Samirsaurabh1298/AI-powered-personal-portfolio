@@ -107,6 +107,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(v => !v)}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <span className={menuOpen ? 'open' : ''} />
           <span className={menuOpen ? 'open' : ''} />
@@ -116,7 +117,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="mobile-menu">
+        <div className="mobile-menu" id="mobile-menu">
           {NAV_LINKS.map(({ id, label }) => (
             <a
               key={id}

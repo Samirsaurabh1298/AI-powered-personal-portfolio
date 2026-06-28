@@ -41,7 +41,7 @@ export default function Skills() {
             transition={{ duration: 0.45, delay: index * 0.08 }}
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
           >
-            <div className="text-2xl mb-4">{icon}</div>
+            <div className="text-2xl mb-4" aria-hidden="true">{icon}</div>
             <div className="font-display font-bold text-base mb-2" style={{ color: 'var(--text)' }}>{name}</div>
             <p className="text-[13px] leading-loose mb-4 flex-1" style={{ color: 'var(--muted)' }}>{desc}</p>
             <div className="flex flex-wrap gap-1.5">
