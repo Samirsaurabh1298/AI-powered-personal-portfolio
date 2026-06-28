@@ -124,8 +124,8 @@ export default function AIChat() {
                           code: ({ children }) => {
                             const content = String(children).replace(/\n$/, '')
                             return content.includes('\n')
-                              ? <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: 6, overflowX: 'auto', fontSize: '0.85em', margin: '6px 0' }}><code>{content}</code></pre>
-                              : <code style={{ background: 'rgba(34,211,238,0.1)', padding: '1px 5px', borderRadius: 3, fontSize: '0.9em' }}>{content}</code>
+                              ? <pre style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '10px', borderRadius: 6, overflowX: 'auto', fontSize: '0.85em', margin: '6px 0' }}><code>{content}</code></pre>
+                              : <code style={{ background: 'var(--tag-bg)', padding: '1px 5px', borderRadius: 3, fontSize: '0.9em' }}>{content}</code>
                           },
                         }}
                       >
@@ -156,6 +156,7 @@ export default function AIChat() {
             <textarea
               className="chat-input"
               placeholder="Ask anything about Samir..."
+              aria-label="Ask the AI assistant a question"
               rows={1}
               value={input}
               onChange={e => setInput(e.target.value)}
@@ -170,6 +171,7 @@ export default function AIChat() {
               className="chat-send"
               onClick={handleSend}
               disabled={isStreaming || !input.trim()}
+              aria-label="Send message"
             >
               ➤
             </button>

@@ -100,7 +100,7 @@ export default function AvatarHero() {
   return (
     <div className="flex flex-col items-center gap-0">
       {/* Avatar */}
-      <div ref={containerRef} className="relative" style={{ width: 220, height: 220 }}>
+      <div ref={containerRef} className="relative" style={{ width: 'min(220px, 80vw)', height: 'min(220px, 80vw)' }}>
         {/* Pulsing rings */}
         <div className="avatar-ring-1" />
         <div className="avatar-ring-2" />
@@ -110,6 +110,7 @@ export default function AvatarHero() {
           <motion.img
             src={avatarImg}
             alt="Samir Saurabh"
+            fetchPriority="high"
             animate={{ scaleY: isBlinking ? 0.92 : 1 }}
             transition={{ duration: 0.08 }}
             style={{
@@ -182,11 +183,13 @@ export default function AvatarHero() {
                 placeholder="Ask me anything..."
                 disabled={isStreaming}
                 className="mini-chat-input"
+                aria-label="Ask Samir a question"
               />
               <button
                 onClick={handleSend}
                 disabled={isStreaming || !miniInput.trim()}
                 className="mini-chat-send"
+                aria-label="Send message"
               >
                 ➤
               </button>

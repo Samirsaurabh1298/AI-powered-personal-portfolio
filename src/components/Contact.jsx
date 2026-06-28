@@ -81,7 +81,7 @@ export default function Contact() {
                 className="contact-link"
                 {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
               >
-                <span className="contact-icon">{icon}</span>
+                <span className="contact-icon" aria-hidden="true">{icon}</span>
                 <span>{label}</span>
               </a>
             ))}
@@ -162,7 +162,7 @@ export default function Contact() {
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                style={{ color: '#4ade80', fontSize: 13 }}
+                style={{ color: 'var(--color-success)', fontSize: 13 }}
               >
                 ✓ Message sent! I'll reply within 24h.
               </motion.p>
@@ -171,7 +171,7 @@ export default function Contact() {
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                style={{ color: '#f87171', fontSize: 13 }}
+                style={{ color: 'var(--color-danger)', fontSize: 13 }}
               >
                 Something went wrong. Email me directly at samirsaurabh.dev@gmail.com
               </motion.p>
