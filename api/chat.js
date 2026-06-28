@@ -34,7 +34,31 @@ export default async function handler(req) {
     return new Response('Method not allowed', { status: 405 })
   }
 
-  const { messages } = await req.json()
+  if (!process.env.GROQ_API_KEY) {
+    return new Response(JSON.stringify({ error: 'AI service not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    })
+  }
+
+  let messages
+  try {
+    const body = await req.json()
+    messages = body?.messages
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    })
+  }
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return new Response(JSON.stringify({ error: 'messages must be a non-empty array' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    })
+  }
+
+  const contextMessages = messages.slice(-20)
 
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
@@ -46,7 +70,7 @@ export default async function handler(req) {
       model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: SYSTEM_CONTEXT },
-        ...messages,
+        ...contextMessages,
       ],
       max_tokens: 800,
       temperature: 0.7,

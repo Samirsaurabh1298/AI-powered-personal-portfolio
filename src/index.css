@@ -34,7 +34,7 @@ html.light {
   --accent2: #6c47ff;
   --accent3: #e63946;
   --text: #212529;
-  --muted: #6c757d;
+  --muted: #545d6b;
   --nav-scrolled-bg: rgba(248, 249, 250, 0.94);
   --hero-grid-color: rgba(74, 144, 226, 0.07);
   --tag-bg: rgba(74, 144, 226, 0.08);
@@ -56,10 +56,26 @@ body {
   font-size: 14px;
   line-height: 1.7;
   overflow-x: hidden;
-  cursor: none;
 }
 
 a { color: inherit; text-decoration: none; }
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 20px;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 8px 18px;
+  border-radius: 4px;
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-to-content:focus { top: 20px; }
 
 nav, section, .skill-card, .project-card, .chat-box, .tag, .exp-item, .contact-link {
   transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
@@ -97,6 +113,13 @@ html.light body::before { opacity: 0.1; }
   transition: all 0.15s ease;
 }
 html.light .cursor-ring { border-color: rgba(74, 144, 226, 0.4); }
+
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+@media (pointer: coarse) {
+  .cursor, .cursor-follower, .cursor-ring { display: none !important; }
+}
 
 /* ── NAVBAR ── */
 .navbar {
