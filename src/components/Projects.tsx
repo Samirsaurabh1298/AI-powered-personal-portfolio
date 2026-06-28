@@ -143,6 +143,7 @@ export default function Projects() {
             num={num} accent={accent} stack={stack} name={name} desc={desc}
             challenge={challenge} approach={approach} metrics={metrics}
             nda={false} url={url} index={index} featured
+            colSpan={index === featured.length - 1 && featured.length % 3 !== 0}
           />
         ))}
       </div>
@@ -163,6 +164,7 @@ export default function Projects() {
             num={num} accent={accent} stack={stack} name={name} desc={desc}
             challenge={challenge} approach={approach} metrics={metrics}
             nda url={url} index={index}
+            colSpan={index === production.length - 1 && production.length % 3 !== 0}
           />
         ))}
       </div>
@@ -170,14 +172,14 @@ export default function Projects() {
   )
 }
 
-function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metrics, nda, url, index, featured = false }: {
+function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metrics, nda, url, index, featured = false, colSpan = false }: {
   num: string; accent: string; stack: string[]; name: string; desc: string
   challenge: string; approach: string; metrics: Metric[]
-  nda: boolean; url: string | null; index: number; featured?: boolean
+  nda: boolean; url: string | null; index: number; featured?: boolean; colSpan?: boolean
 }) {
   return (
     <motion.div
-      className="project-card flex flex-col"
+      className={`project-card flex flex-col${colSpan ? ' lg:col-span-3' : ''}`}
       style={{ minHeight: featured ? 300 : 260 }}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +200,7 @@ function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metr
         )}
       </div>
 
-      <div className="font-display font-bold leading-tight mb-1.5" style={{ fontSize: featured ? 18 : 16, color: 'var(--text)' }}>
+      <div className="font-display font-bold leading-tight mb-1.5" style={{ fontSize: featured ? 20 : 17, color: 'var(--text)' }}>
         {name}
       </div>
 

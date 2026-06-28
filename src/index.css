@@ -384,10 +384,10 @@ html.light .hero-name-stroke { -webkit-text-stroke: 1px rgba(0, 0, 0, 0.15); }
 /* ── PROJECT NUM ── */
 .project-num {
   font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800;
-  color: rgba(255, 255, 255, 0.05); position: absolute; top: -8px; right: 20px;
-  line-height: 1; user-select: none;
+  color: rgba(255, 255, 255, 0.07); position: absolute; top: -8px; right: 16px;
+  line-height: 1; user-select: none; letter-spacing: -2px;
 }
-html.light .project-num { color: rgba(0, 0, 0, 0.05); }
+html.light .project-num { color: rgba(0, 0, 0, 0.07); }
 
 /* ── PROJECT LIVE LINK ── */
 .project-live-link {
