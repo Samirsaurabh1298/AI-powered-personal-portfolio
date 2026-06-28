@@ -136,7 +136,7 @@ export default function Projects() {
       </motion.h2>
 
       {/* ── Featured live projects ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', marginBottom: 1 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', marginBottom: 1 }}>
         {featured.map(({ num, accent, stack, name, desc, challenge, approach, metrics, url }, index) => (
           <ProjectCard
             key={num}
@@ -156,7 +156,7 @@ export default function Projects() {
       </div>
 
       {/* ── NDA production work ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: '1px', background: 'var(--border)', border: '1px solid var(--border)' }}>
         {production.map(({ num, accent, stack, name, desc, challenge, approach, metrics, url }, index) => (
           <ProjectCard
             key={num}
