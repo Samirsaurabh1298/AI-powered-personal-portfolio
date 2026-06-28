@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
+import AvatarHero from './AvatarHero'
 
 const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 async function notifyResumeDownload() {
-  const now       = new Date()
-  const timestamp = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-  const userAgent = navigator.userAgent
-  const referrer  = document.referrer || 'Direct visit'
+  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   try {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email:   'samirsaurabh.dev@gmail.com',
-      subject:    '🎉 Someone downloaded your resume!',
+      to_email: 'samirsaurabh.dev@gmail.com',
+      subject: '🎉 Someone downloaded your resume!',
       timestamp,
-      user_agent: userAgent,
-      referrer,
-      message:    `Your resume was downloaded on ${timestamp}.\n\nBrowser: ${userAgent}\nReferrer: ${referrer}`,
+      user_agent: navigator.userAgent,
+      referrer: document.referrer || 'Direct visit',
+      message: `Resume downloaded on ${timestamp}.`,
     })
   } catch (err) {
     console.warn('EmailJS notification failed:', err)
@@ -25,11 +24,47 @@ async function notifyResumeDownload() {
 }
 
 const STATS = [
-  { num: '3+',    label: 'Years Experience' },
-  { num: '300K+', label: 'Monthly Users' },
-  { num: '35%',   label: 'Perf Improvement' },
-  { num: '1.8s',  label: 'LCP Achieved' },
+  { value: 3, suffix: '+', label: 'Years Experience' },
+  { value: 300, suffix: 'K+', label: 'Monthly Users' },
+  { value: 35, suffix: '%', label: 'Perf Improvement' },
+  { value: 1.8, suffix: 's', label: 'LCP Achieved' },
 ]
+
+function AnimatedStat({ value, suffix, label, delay }) {
+  const [displayed, setDisplayed] = useState(0)
+
+  useEffect(() => {
+    const duration = 1500
+    const start = performance.now()
+    const animate = (now) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setDisplayed(eased * value)
+      if (progress < 1) requestAnimationFrame(animate)
+    }
+    const timer = setTimeout(() => requestAnimationFrame(animate), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+
+  const formatted = value % 1 !== 0
+    ? displayed.toFixed(1)
+    : Math.floor(displayed).toString()
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: delay / 1000 }}
+    >
+      <div className="font-display font-extrabold text-3xl md:text-4xl leading-none" style={{ color: 'var(--accent)' }}>
+        {formatted}{suffix}
+      </div>
+      <div className="text-[10px] md:text-[11px] uppercase tracking-widest mt-1" style={{ color: 'var(--muted)' }}>
+        {label}
+      </div>
+    </motion.div>
+  )
+}
 
 export default function Hero() {
   const [resumeLabel, setResumeLabel] = useState('↓ Download Resume')
@@ -48,66 +83,83 @@ export default function Hero() {
   return (
     <section id="home" className="hero-section relative flex items-center overflow-hidden">
       <div className="hero-grid" />
-      <div className="absolute pointer-events-none" style={{ width: 600, height: 600, background: 'radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%)', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
-      <div className="absolute pointer-events-none hidden md:block" style={{ width: 400, height: 400, background: 'radial-gradient(circle, rgba(123,97,255,0.08) 0%, transparent 70%)', top: '20%', right: '10%' }} />
+      <div className="absolute pointer-events-none" style={{ width: 700, height: 700, background: 'radial-gradient(circle, rgba(0,229,255,0.05) 0%, transparent 70%)', top: '50%', left: '40%', transform: 'translate(-50%,-50%)' }} />
+      <div className="absolute pointer-events-none hidden md:block" style={{ width: 400, height: 400, background: 'radial-gradient(circle, rgba(123,97,255,0.07) 0%, transparent 70%)', top: '15%', right: '5%' }} />
 
-      <div className="relative z-10 w-full" style={{ maxWidth: 900 }}>
-        <div className="hero-badge">Available for opportunities</div>
+      <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center" style={{ maxWidth: 1100 }}>
 
-        <h1
-          className="font-display font-extrabold leading-none mb-5 md:mb-6"
-          style={{ fontSize: 'clamp(44px, 10vw, 110px)', letterSpacing: '-2px', animation: 'fadeUp 0.8s 0.1s ease both' }}
-        >
-          Samir
-          <span className="hero-name-stroke">
-            Saur<span style={{ color: 'var(--accent)', WebkitTextStroke: 0 }}>abh</span>
-          </span>
-        </h1>
-
-        <p
-          className="font-serif italic mb-8 md:mb-10"
-          style={{ fontSize: 'clamp(15px, 2.5vw, 26px)', color: 'var(--muted)', animation: 'fadeUp 0.8s 0.2s ease both' }}
-        >
-          Frontend Engineer — React Specialist &amp; Performance Obsessive
-        </p>
-
-        {/* Stats — 2 col on mobile, row on desktop */}
-        <div
-          className="grid grid-cols-2 gap-x-8 gap-y-5 md:flex md:gap-12 mb-10 md:mb-12"
-          style={{ animation: 'fadeUp 0.8s 0.3s ease both' }}
-        >
-          {STATS.map(({ num, label }) => (
-            <div key={label}>
-              <div className="font-display font-extrabold text-3xl md:text-4xl leading-none" style={{ color: 'var(--accent)' }}>{num}</div>
-              <div className="text-[10px] md:text-[11px] uppercase tracking-widest mt-1" style={{ color: 'var(--muted)' }}>{label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Buttons — stacked on mobile, row on desktop */}
-        <div
-          className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4"
-          style={{ animation: 'fadeUp 0.8s 0.4s ease both' }}
-        >
-          <a href="#projects" className="btn-primary">View Projects →</a>
-          <a href="#ai-chat" className="btn-secondary">🤖 Ask AI About Me</a>
-          <a
-            href="https://drive.google.com/file/d/1T1QPvhqMpnnSoBDuhAWGvkJPhu4lKeny/view?usp=sharing"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-resume"
-            onClick={handleResumeClick}
+        {/* LEFT — text content */}
+        <div>
+          <motion.div
+            className="hero-badge"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
           >
-            {resumeLabel}
-          </a>
+            Available for opportunities
+          </motion.div>
+
+          <motion.h1
+            className="font-display font-extrabold leading-none mb-5 md:mb-6"
+            style={{ fontSize: 'clamp(44px, 8vw, 96px)', letterSpacing: '-3px' }}
+            initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            Samir
+            <span className="hero-name-stroke">
+              Saur<span style={{ color: 'var(--accent)', WebkitTextStroke: 0 }}>abh</span>
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="font-serif italic mb-8 md:mb-10"
+            style={{ fontSize: 'clamp(15px, 2.2vw, 22px)', color: 'var(--muted)' }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Frontend Engineer — React Specialist &amp; Performance Obsessive
+          </motion.p>
+
+          <div className="grid grid-cols-2 gap-x-8 gap-y-5 md:flex md:gap-10 mb-10 md:mb-12">
+            {STATS.map(({ value, suffix, label }, i) => (
+              <AnimatedStat key={label} value={value} suffix={suffix} label={label} delay={600 + i * 100} />
+            ))}
+          </div>
+
+          <motion.div
+            className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
+            <a href="#projects" className="btn-primary">View Projects →</a>
+            <a href="#ai-chat" className="btn-secondary">💬 Full AI Chat</a>
+            <a
+              href="https://drive.google.com/file/d/1T1QPvhqMpnnSoBDuhAWGvkJPhu4lKeny/view?usp=sharing"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-resume"
+              onClick={handleResumeClick}
+            >
+              {resumeLabel}
+            </a>
+          </motion.div>
         </div>
+
+        {/* RIGHT — avatar + speech bubble */}
+        <motion.div
+          className="flex justify-center md:justify-end"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+        >
+          <AvatarHero />
+        </motion.div>
       </div>
 
-      {/* Scroll hint — desktop only */}
-      <div
-        className="absolute hidden md:flex items-center gap-3 text-[11px] uppercase tracking-widest"
-        style={{ bottom: 40, left: 48, color: 'var(--muted)', animation: 'fadeUp 1s 0.6s ease both' }}
-      >
+      <div className="absolute hidden md:flex items-center gap-3 text-[11px] uppercase tracking-widest" style={{ bottom: 40, left: 48, color: 'var(--muted)' }}>
         <div className="scroll-line" />
         Scroll to explore
       </div>
