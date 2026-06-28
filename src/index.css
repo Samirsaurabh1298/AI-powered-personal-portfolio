@@ -303,7 +303,7 @@ html.light .cursor-ring { border-color: rgba(74, 144, 226, 0.4); }
   html.light .skill-card:hover { background: var(--surface); box-shadow: var(--card-shadow); }
 
   .project-card {
-    background: var(--surface); padding: 40px;
+    background: var(--surface); padding: 22px 24px;
     position: relative; overflow: hidden;
   }
   .project-card:hover { background: var(--bg2); }

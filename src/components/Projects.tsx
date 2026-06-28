@@ -178,7 +178,7 @@ function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metr
   return (
     <motion.div
       className="project-card flex flex-col"
-      style={{ minHeight: featured ? 400 : 340 }}
+      style={{ minHeight: featured ? 300 : 260 }}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
@@ -189,7 +189,7 @@ function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metr
       <div className="project-num">{num}</div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
+      <div className="flex flex-wrap gap-1.5 mb-3">
         {stack.map(t => <span key={t} className="tag">{t}</span>)}
         {nda ? (
           <span className="tag" style={{ borderColor: 'rgba(248,113,113,0.4)', color: '#f87171', background: 'rgba(248,113,113,0.06)' }}>NDA</span>
@@ -198,30 +198,30 @@ function ProjectCard({ num, accent, stack, name, desc, challenge, approach, metr
         )}
       </div>
 
-      <div className="font-display font-bold leading-tight mb-2" style={{ fontSize: featured ? 22 : 19, color: 'var(--text)' }}>
+      <div className="font-display font-bold leading-tight mb-1.5" style={{ fontSize: featured ? 18 : 16, color: 'var(--text)' }}>
         {name}
       </div>
 
-      <p className="text-[13px] leading-loose mb-4" style={{ color: 'var(--muted)' }}>{desc}</p>
+      <p className="text-[12px] leading-relaxed mb-3" style={{ color: 'var(--muted)' }}>{desc}</p>
 
       {/* Engineering story */}
-      <div className="flex flex-col gap-3 flex-1" style={{ borderTop: '1px solid var(--border)', paddingTop: 14 }}>
+      <div className="flex flex-col gap-2 flex-1" style={{ borderTop: '1px solid var(--border)', paddingTop: 10 }}>
         <div>
-          <div className="text-[10px] uppercase tracking-widest mb-1.5 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+          <div className="text-[10px] uppercase tracking-widest mb-1 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
             <span>⚡</span> The Challenge
           </div>
-          <p className="text-[12px] leading-relaxed" style={{ color: 'var(--muted)' }}>{challenge}</p>
+          <p className="text-[11px] leading-relaxed" style={{ color: 'var(--muted)' }}>{challenge}</p>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-widest mb-1.5 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+          <div className="text-[10px] uppercase tracking-widest mb-1 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
             <span>⚙</span> My Approach
           </div>
-          <p className="text-[12px] leading-relaxed" style={{ color: 'var(--muted)' }}>{approach}</p>
+          <p className="text-[11px] leading-relaxed" style={{ color: 'var(--muted)' }}>{approach}</p>
         </div>
       </div>
 
       {/* Metrics + link */}
-      <div className="flex gap-5 flex-wrap items-center pt-4 mt-4" style={{ borderTop: '1px solid var(--border)' }}>
+      <div className="flex gap-4 flex-wrap items-center pt-3 mt-3" style={{ borderTop: '1px solid var(--border)' }}>
         {metrics.map(({ val, label }) => (
           <div key={label}>
             <div className="font-display font-bold text-base leading-none" style={{ color: 'var(--accent)' }}>{val}</div>
