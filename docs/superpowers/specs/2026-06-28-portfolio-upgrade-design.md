@@ -207,7 +207,7 @@ Layout: 2-column — left: contact links + info cards (unchanged), right: new fo
 
 ### 4.7 Navbar (MINOR)
 
-**Add:** GitHub icon link → `https://github.com/samirsaurabh` (or correct URL)  
+**Add:** GitHub icon link → `https://github.com/Samirsaurabh1298` (or correct URL)  
 **Add:** Smooth active section highlighting (IntersectionObserver on section IDs → highlight nav link)
 
 ---
@@ -221,7 +221,7 @@ All changes in `index.html` only — no component changes needed.
 <meta name="description" content="Samir Saurabh — Frontend Engineer specializing in React, TypeScript, and Core Web Vitals optimization. 3+ years, 300K+ monthly users, LCP 1.8s." />
 <meta name="keywords" content="Frontend Engineer, React Developer, TypeScript, Bangalore, Remote, Core Web Vitals" />
 <meta name="author" content="Samir Saurabh" />
-<link rel="canonical" href="https://YOUR_DOMAIN_HERE" /><!-- confirm your deployed domain -->
+<link rel="canonical" href="https://samir-portfolio.vercel.app" /><!-- update after first Vercel deploy with actual subdomain -->
 ```
 
 ### 5.2 Open Graph (LinkedIn, Slack, WhatsApp previews)
@@ -253,7 +253,7 @@ All changes in `index.html` only — no component changes needed.
   "url": "https://samirsaurabh.dev",
   "email": "samirsaurabh.dev@gmail.com",
   "address": { "@type": "PostalAddress", "addressLocality": "Bangalore", "addressCountry": "IN" },
-  "sameAs": ["https://linkedin.com/in/samirsaurabh", "https://github.com/samirsaurabh"],
+  "sameAs": ["https://linkedin.com/in/samirsaurabh", "https://github.com/Samirsaurabh1298"],
   "knowsAbout": ["React", "TypeScript", "Core Web Vitals", "Frontend Engineering"]
 }
 </script>
