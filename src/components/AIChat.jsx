@@ -1,25 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
-
-const GROK_API_KEY = import.meta.env.VITE_GROK_API_KEY
-
-const SYSTEM_CONTEXT = `You are an AI assistant for Samir Saurabh's portfolio website. Answer questions about Samir in first person (as if you are him). Be concise, professional, and friendly. Keep answers under 100 words unless asked for details.
-
-About Samir:
-- Frontend Engineer with 3+ years of experience at Mahindra First Choice Wheels Ltd. (MFCWL), Bangalore
-- Specializes in React.js, TypeScript, Core Web Vitals optimization, and design system architecture
-- Built and maintained 4+ production React applications serving 300K+ monthly users
-- Improved app performance by 35% through code splitting, lazy loading, memoization
-- Achieved Core Web Vitals: LCP 1.8s, FID 14ms, CLS 0.12 — best-in-class metrics
-- Architected reusable component library with 50+ TypeScript components (atomic design) — reduced dev time by 40%
-- Led 15+ major feature deliveries in Agile cross-functional teams (UX, backend, QA)
-- Tech stack: React.js (Hooks, Context API), Redux, TypeScript, JavaScript ES6+, Tailwind CSS, Material-UI, Bootstrap, Formik, Jest
-- Tools: Git, Vite, Webpack, Chrome DevTools, Postman, Jira, AWS S3, AWS Amplify, Vercel, Netlify
-- Projects: Ediig Auction Platform Revamp (real-time WebSocket), Vehicle Inspection AI Platform (Chart.js dashboards), MFCWL Website (CWV optimization), YMS (SVG fractional ratings)
-- Education: B.Tech Computer Science, School of Research and Technology Bhopal, 2020
-- Location: Bangalore, India
-- Email: samirsaurabh.dev@gmail.com
-- LinkedIn: linkedin.com/in/samirsaurabh
-- Open to new opportunities`
+import { useRef, useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { useChat } from '../context/ChatContext'
 
 const SUGGESTIONS = [
   "What's your experience with React performance optimization?",
@@ -29,91 +12,56 @@ const SUGGESTIONS = [
   "What makes you different from other frontend devs?",
 ]
 
-function getTime() {
-  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
-
 export default function AIChat() {
-  const [messages, setMessages] = useState([
-    { role: 'bot', text: "Hey there! 👋 I'm Samir's AI assistant. I know everything about his experience, skills, and projects. What would you like to know?", time: getTime() },
-  ])
+  const { messages, sendMessage, isStreaming, clearChat } = useChat()
   const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [history, setHistory] = useState([])
   const messagesRef = useRef(null)
-  const inputRef = useRef(null)
 
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight
     }
-  }, [messages, loading])
+  }, [messages, isStreaming])
 
-  const sendMessage = async (text) => {
-    const trimmed = text.trim()
-    if (!trimmed || loading) return
-
+  const handleSend = () => {
+    const trimmed = input.trim()
+    if (!trimmed || isStreaming) return
+    sendMessage(trimmed)
     setInput('')
-    const userMsg = { role: 'user', text: trimmed, time: getTime() }
-    setMessages(prev => [...prev, userMsg])
-    const newHistory = [...history, { role: 'user', content: trimmed }]
-    setHistory(newHistory)
-    setLoading(true)
-
-    try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROK_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [
-            { role: 'system', content: SYSTEM_CONTEXT },
-            ...newHistory,
-          ],
-          max_tokens: 300,
-          temperature: 0.7,
-        }),
-      })
-
-      if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err?.error?.message || 'API error')
-      }
-
-      const data = await res.json()
-      const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that. Please try again!"
-      setHistory(prev => [...prev, { role: 'assistant', content: reply }])
-      setMessages(prev => [...prev, { role: 'bot', text: reply, time: getTime() }])
-    } catch (err) {
-      setMessages(prev => [...prev, { role: 'bot', text: `Error: ${err.message}`, time: getTime() }])
-    } finally {
-      setLoading(false)
-      inputRef.current?.focus()
-    }
   }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      sendMessage(input)
+      handleSend()
     }
   }
 
   return (
     <section id="ai-chat" className="px-5 py-16 md:px-12 md:py-28" style={{ background: 'var(--bg)' }}>
       <div className="section-label">Powered by Groq AI</div>
-      <h2 className="section-title fade-in">Ask Me<br />Anything</h2>
+      <motion.h2
+        className="section-title"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.5 }}
+      >
+        Ask Me<br />Anything
+      </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
-        <div className="ai-intro fade-in">
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5 }}
+        >
           <p className="text-sm leading-loose mb-5" style={{ color: 'var(--muted)' }}>
             Instead of reading through my resume, just ask. This AI assistant knows everything about my experience, skills, projects, and what I bring to a team.
           </p>
           <p className="text-sm leading-loose mb-8" style={{ color: 'var(--muted)' }}>
-            Ask it anything — from technical skills to what kind of teams I thrive in.
+            Conversation started in the hero carries over here. Ask follow-up questions naturally.
           </p>
           <div className="flex flex-col gap-2">
             {SUGGESTIONS.map(s => (
@@ -121,35 +69,81 @@ export default function AIChat() {
                 key={s}
                 className="ai-suggestion"
                 onClick={() => sendMessage(s)}
+                disabled={isStreaming}
               >
                 {s}
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="chat-box">
+        <motion.div
+          className="chat-box"
+          initial={{ opacity: 0, x: 24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="chat-header">
             <div className="chat-avatar">🤖</div>
-            <div>
+            <div style={{ flex: 1 }}>
               <div className="font-display font-bold text-sm" style={{ color: 'var(--text)' }}>Samir's AI Assistant</div>
-              <div className="chat-status">Online · Powered by Groq</div>
+              <div className="chat-status">
+                {isStreaming ? 'Samir is typing...' : 'Online · Powered by Groq'}
+              </div>
             </div>
+            <button
+              onClick={clearChat}
+              style={{ fontSize: 11, color: 'var(--muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px' }}
+              title="Clear conversation"
+            >
+              Clear
+            </button>
           </div>
 
           <div className="chat-messages" ref={messagesRef}>
-            {messages.map((msg, i) => (
-              <div key={i} className={`msg ${msg.role}`}>
-                <div className="msg-bubble">{msg.text}</div>
-                <div className="msg-time">{msg.time}</div>
-              </div>
-            ))}
-            {loading && (
+            <AnimatePresence initial={false}>
+              {messages.map((msg, i) => (
+                <motion.div
+                  key={i}
+                  className={`msg ${msg.role}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="msg-bubble">
+                    {msg.role === 'bot' ? (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({ children }) => <p style={{ margin: '0 0 6px' }}>{children}</p>,
+                          ul: ({ children }) => <ul style={{ paddingLeft: 18, margin: '6px 0' }}>{children}</ul>,
+                          ol: ({ children }) => <ol style={{ paddingLeft: 18, margin: '6px 0' }}>{children}</ol>,
+                          li: ({ children }) => <li style={{ marginBottom: 3 }}>{children}</li>,
+                          strong: ({ children }) => <strong style={{ color: 'var(--accent)' }}>{children}</strong>,
+                          code: ({ inline, children }) => inline
+                            ? <code style={{ background: 'rgba(34,211,238,0.1)', padding: '1px 5px', borderRadius: 3, fontSize: '0.9em' }}>{children}</code>
+                            : <pre style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: 6, overflowX: 'auto', fontSize: '0.85em', margin: '6px 0' }}><code>{children}</code></pre>,
+                        }}
+                      >
+                        {msg.text || ''}
+                      </ReactMarkdown>
+                    ) : (
+                      msg.text
+                    )}
+                    {isStreaming && i === messages.length - 1 && msg.role === 'bot' && (
+                      <span className="typing-cursor-inline" />
+                    )}
+                  </div>
+                  <div className="msg-time">{msg.time}</div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {isStreaming && messages[messages.length - 1]?.role !== 'bot' && (
               <div className="msg bot">
                 <div className="typing-indicator">
-                  <div className="typing-dot" />
-                  <div className="typing-dot" />
-                  <div className="typing-dot" />
+                  <div className="typing-dot" /><div className="typing-dot" /><div className="typing-dot" />
                 </div>
               </div>
             )}
@@ -157,7 +151,6 @@ export default function AIChat() {
 
           <div className="chat-input-area">
             <textarea
-              ref={inputRef}
               className="chat-input"
               placeholder="Ask anything about Samir..."
               rows={1}
@@ -168,16 +161,17 @@ export default function AIChat() {
                 e.target.style.height = 'auto'
                 e.target.style.height = Math.min(e.target.scrollHeight, 100) + 'px'
               }}
+              disabled={isStreaming}
             />
             <button
               className="chat-send"
-              onClick={() => sendMessage(input)}
-              disabled={loading}
+              onClick={handleSend}
+              disabled={isStreaming || !input.trim()}
             >
               ➤
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
